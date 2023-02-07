@@ -8,8 +8,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.overlaysample"
-        minSdk 32
-        targetSdk 32
+        minSdk 31
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
@@ -28,6 +28,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
     }
 }
 

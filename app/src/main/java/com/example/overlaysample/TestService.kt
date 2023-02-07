@@ -10,10 +10,14 @@ import android.graphics.PixelFormat
 import android.os.IBinder
 import android.util.Log
 import android.view.*
+import android.widget.Button
+import android.widget.ImageView
+import com.example.overlaysample.databinding.ServiceLayerBinding
 
 class TestService : Service() {
-    private lateinit var  newView: View
-    private lateinit var  windowManager: WindowManager
+    private lateinit var binding: ServiceLayerBinding
+    private lateinit var newView: View
+    private lateinit var windowManager: WindowManager
 
     override fun onCreate() {
         super.onCreate()
@@ -25,6 +29,13 @@ class TestService : Service() {
         // レイアウトファイルからInflateするViewを作成
         val nullParent: ViewGroup? = null
         newView = layoutInflater.inflate(R.layout.service_layer, nullParent)
+
+        binding = ServiceLayerBinding.inflate(layoutInflater)
+
+        val diceButton: Button = newView.findViewById(R.id.dice_button)
+        diceButton.setOnClickListener {
+            rollDice()
+        }
     }
 
     override fun onStartCommand(intent: Intent?,
@@ -75,7 +86,6 @@ class TestService : Service() {
 
         // ViewにTouchListenerを設定する
         newView.setOnTouchListener { _, event ->
-            Log.d("debug", "onTouch")
             if (event.action == MotionEvent.ACTION_DOWN) {
                 newView.performClick()
 
@@ -101,4 +111,25 @@ class TestService : Service() {
         return null
     }
 
+    private fun rollDice() {
+        val dice = Dice(6)
+        val diceRoll = dice.roll()
+        Log.d("debug", "rollDice " + diceRoll.toString())
+
+        val imageView: ImageView = newView.findViewById(R.id.imageView)
+        when (diceRoll) {
+            1 -> imageView.setImageResource(R.drawable.one)
+            2 -> imageView.setImageResource(R.drawable.two)
+            3 -> imageView.setImageResource(R.drawable.three)
+            4 -> imageView.setImageResource(R.drawable.four)
+            5 -> imageView.setImageResource(R.drawable.five)
+            6 -> imageView.setImageResource(R.drawable.six)
+        }
+    }
+}
+
+class Dice(val numSides: Int) {
+    fun roll(): Int {
+        return (1..numSides).random()
+    }
 }
