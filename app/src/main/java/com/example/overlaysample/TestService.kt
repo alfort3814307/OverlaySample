@@ -1,9 +1,6 @@
 package com.example.overlaysample
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
@@ -12,6 +9,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import com.example.overlaysample.databinding.ServiceLayerBinding
 
 class TestService : Service() {
@@ -34,10 +32,20 @@ class TestService : Service() {
 
         binding = ServiceLayerBinding.inflate(layoutInflater)
 
-        val diceButton: Button = newView.findViewById(R.id.dice_button)
+        /*val diceButton: Button = newView.findViewById(R.id.dice_button)
         diceButton.setOnClickListener {
             rollDice()
         }
+        */
+        val items = arrayOf("〇", "✕", "△", "□", "R1", "R2", "R3", "L1", "L2", "L3", "↑", "←", "↓", "→", "タッチパッド")
+        val diceButton: Button = newView.findViewById(R.id.dice_button)
+        diceButton.setOnClickListener {
+
+            val intent = Intent(this, CallDialogActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        }
+
 
         val diceButton2: Button = newView2.findViewById(R.id.dice_button2)
         diceButton2.setOnClickListener {
